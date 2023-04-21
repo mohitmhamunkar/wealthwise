@@ -7,5 +7,5 @@ Mohit Mhamunkar
 
 Color Palette
 Background: (0B223D)
-Text: (06C1FD)
-UI & Secondary Text: (49D2FF)
+Text: (FF8D45)
+UI & Secondary Text: (FF5757)
