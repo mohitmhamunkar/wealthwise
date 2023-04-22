@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
 
     EditText username;
@@ -66,7 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        Toast.makeText(LoginActivity.this, "Login failed!",
+                        Toast.makeText(LoginActivity.this, "Login failed! : " +
+                                        Objects.requireNonNull(task.getException()).getLocalizedMessage(),
                                 Toast.LENGTH_SHORT).show();
 
                     }
