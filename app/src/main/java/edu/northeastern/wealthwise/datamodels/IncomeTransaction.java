@@ -6,13 +6,13 @@ import java.time.LocalDate;
  * Income txn data model.
  */
 public class IncomeTransaction {
-    private LocalDate dateOfTransaction;
+    private String dateOfTransaction;
     private double incomeAmount;
-    private IncomeCategory incomeCategory;
-    private AccountCategory accountCategory;
+    private String incomeCategory;
+    private String accountCategory;
     private String note;
 
-    public IncomeTransaction(LocalDate dateOfTransaction, double incomeAmount, IncomeCategory incomeCategory, AccountCategory accountCategory, String note) {
+    public IncomeTransaction(String dateOfTransaction, double incomeAmount, String incomeCategory, String accountCategory, String note) {
         this.dateOfTransaction = dateOfTransaction;
         this.incomeAmount = incomeAmount;
         this.incomeCategory = incomeCategory;
@@ -20,7 +20,7 @@ public class IncomeTransaction {
         this.note = note;
     }
 
-    public LocalDate getDateOfTransaction() {
+    public String getDateOfTransaction() {
         return dateOfTransaction;
     }
 
@@ -28,11 +28,11 @@ public class IncomeTransaction {
         return incomeAmount;
     }
 
-    public IncomeCategory getIncomeCategory() {
+    public String getIncomeCategory() {
         return incomeCategory;
     }
 
-    public AccountCategory getAccountCategory() {
+    public String getAccountCategory() {
         return accountCategory;
     }
 
