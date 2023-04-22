@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="620dp"
         android:clickable="true"
-        android:onClick="onClick"
+        android:onClick="onClickLoginRegisterLink"
         android:text="@string/already_a_member_login_here"
         android:textColor="#ff8D45"
         app:layout_constraintEnd_toEndOf="parent"

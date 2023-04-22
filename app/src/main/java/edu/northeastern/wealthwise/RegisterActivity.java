@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import android.view.View;
-import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -31,11 +30,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-//        username = findViewById(R.id.userName);
-//        password = findViewById(R.id.password);
+        username = findViewById(R.id.userName);
+        password = findViewById(R.id.pass);
 
-//        Button registerButton = findViewById(R.id.registerBtn);
-        Button registerButton = new Button(getApplicationContext());
+        Button registerButton = findViewById(R.id.registerBtn);
         registerButton.setOnClickListener(v -> doRegister(username, password));
     }
 
@@ -73,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void onClick(View view) {
+    public void onClickLoginRegisterLink(View view) {
         int clickId = view.getId();
         if(clickId == R.id.loginLink) {
             startActivity(new Intent(this, LoginActivity.class));

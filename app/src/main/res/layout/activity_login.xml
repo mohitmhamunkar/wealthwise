@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="540dp"
         android:clickable="true"
-        android:onClick="onClick"
+        android:onClick="onClickLoginRegisterLink"
         android:text="@string/not_a_member_register_here"
         android:textColor="#ff8D45"
         app:layout_constraintEnd_toEndOf="parent"
