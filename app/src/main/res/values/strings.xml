@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">wealthwise</string>
     <string name="app_logo">App Logo</string>
-    <string name="username_or_email">Username or Email</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="loginLabel">Login</string>
     <string name="not_a_member_register_here">Not a member? Register here</string>
@@ -9,4 +9,5 @@
     <string name="register">Register</string>
     <string name="enter_password">Enter Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="full_name">Full Name</string>
 </resources>
