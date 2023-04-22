@@ -8,11 +8,11 @@ import java.time.LocalDate;
 public class ExpenseTransaction {
     private LocalDate dateOfTransaction;
     private double expenseAmount;
-    private IncomeCategory expenseCategory;
+    private ExpenseCategory expenseCategory;
     private AccountCategory accountCategory;
     private String note;
 
-    public ExpenseTransaction(LocalDate dateOfTransaction, double expenseAmount, IncomeCategory expenseCategory, AccountCategory accountCategory, String note) {
+    public ExpenseTransaction(LocalDate dateOfTransaction, double expenseAmount, ExpenseCategory expenseCategory, AccountCategory accountCategory, String note) {
         this.dateOfTransaction = dateOfTransaction;
         this.expenseAmount = expenseAmount;
         this.expenseCategory = expenseCategory;
@@ -28,7 +28,7 @@ public class ExpenseTransaction {
         return expenseAmount;
     }
 
-    public IncomeCategory getExpenseCategory() {
+    public ExpenseCategory getExpenseCategory() {
         return expenseCategory;
     }
 
