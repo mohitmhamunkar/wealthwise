@@ -21,6 +21,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText username;
     EditText password;
 
+    EditText confirmPasswd;
+
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +34,21 @@ public class RegisterActivity extends AppCompatActivity {
 
         username = findViewById(R.id.userName);
         password = findViewById(R.id.pass);
+        confirmPasswd = findViewById(R.id.confirmPass);
 
         Button registerButton = findViewById(R.id.registerBtn);
-        registerButton.setOnClickListener(v -> doRegister(username, password));
+        registerButton.setOnClickListener(v -> doRegister(username, password, confirmPasswd));
     }
 
-    private void doRegister(EditText username, EditText password) {
+    private void doRegister(EditText username, EditText password, EditText confirmPasswd) {
         String userStr = String.valueOf(username.getText());
         String passwordStr = String.valueOf(password.getText());
+        String confirmPwdStr = String.valueOf(confirmPasswd.getText());
+
+        if (!passwordStr.equals(confirmPwdStr)) {
+            Toast.makeText(RegisterActivity.this, "Passwords do not match!", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (TextUtils.isEmpty(userStr)) {
             Toast.makeText(RegisterActivity.this, "Please enter Username!", Toast.LENGTH_LONG).show();
