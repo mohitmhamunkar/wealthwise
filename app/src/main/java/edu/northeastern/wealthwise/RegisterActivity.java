@@ -14,13 +14,17 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+
 import android.view.View;
+
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    EditText fullName;
     EditText username;
     EditText password;
-
     EditText confirmPasswd;
 
     private FirebaseAuth mAuth;
@@ -31,15 +35,17 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        fullName = findViewById(R.id.name);
         username = findViewById(R.id.userName);
         password = findViewById(R.id.pass);
         confirmPasswd = findViewById(R.id.confirmPass);
 
         Button registerButton = findViewById(R.id.registerBtn);
-        registerButton.setOnClickListener(v -> doRegister(username, password, confirmPasswd));
+        registerButton.setOnClickListener(v -> doRegister(fullName, username, password, confirmPasswd));
     }
 
-    private void doRegister(EditText username, EditText password, EditText confirmPasswd) {
+    private void doRegister(EditText fullName, EditText username, EditText password, EditText confirmPasswd) {
+        String fullNameStr = String.valueOf(fullName.getText());
         String userStr = String.valueOf(username.getText());
         String passwordStr = String.valueOf(password.getText());
         String confirmPwdStr = String.valueOf(confirmPasswd.getText());
@@ -49,8 +55,12 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        if (TextUtils.isEmpty(fullNameStr)) {
+            Toast.makeText(RegisterActivity.this, "Please enter Name!", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (TextUtils.isEmpty(userStr)) {
-            Toast.makeText(RegisterActivity.this, "Please enter Username!", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this, "Please enter Email!", Toast.LENGTH_LONG).show();
             return;
         }
         if (TextUtils.isEmpty(passwordStr)) {
@@ -61,9 +71,23 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(userStr, passwordStr)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
+                        // Registration successful
                         Log.d(TAG, "createUserWithEmail:success");
+
+                        // Update user's full name
                         FirebaseUser user = mAuth.getCurrentUser();
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(fullNameStr)
+                                .build();
+                        if (user != null) {
+                            user.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            Log.d(TAG, "User profile updated.");
+                                        }
+                                    });
+                        }
+
                         Toast.makeText(RegisterActivity.this, "Registration Successful!",
                                 Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -72,7 +96,8 @@ public class RegisterActivity extends AppCompatActivity {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(RegisterActivity.this, "Registration failed!",
+                        Toast.makeText(RegisterActivity.this, "Registration failed! : " +
+                                Objects.requireNonNull(task.getException()).getLocalizedMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
