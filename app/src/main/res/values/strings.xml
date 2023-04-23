@@ -10,4 +10,15 @@
     <string name="enter_password">Enter Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="full_name">Full Name</string>
+    <string name="prevBtn"><![CDATA[<]]></string>
+    <string name="nextBtn"><![CDATA[>]]></string>
+    <string name="income">Income</string>
+    <string name="expenses">Expenses</string>
+    <string name="total">Total</string>
+    <string name="transaction_icon">Transaction Icon</string>
+    <string name="home">Home</string>
+    <string name="stats">Stats</string>
+    <string name="goals">Goals</string>
+    <string name="profile">Profile</string>
+    <string name="add_transactions">Add Transactions</string>
 </resources>

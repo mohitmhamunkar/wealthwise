@@ -80,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
         int clickId = view.getId();
         if(clickId == R.id.registerLink) {
             startActivity(new Intent(this, RegisterActivity.class));
-            Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         }
         if(clickId == R.id.loginBtn) {
             Toast.makeText(this, "Register Clicked", Toast.LENGTH_SHORT).show();
