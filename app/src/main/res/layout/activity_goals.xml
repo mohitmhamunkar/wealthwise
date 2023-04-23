@@ -4,6 +4,165 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0B223D"
     tools:context=".GoalsActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="565dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/prevBtn"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:fontFamily="@font/crimson_pro"
+        android:text="@string/prevBtn"
+        android:textColor="#FF8D45"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/monthView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/crimson_pro"
+        android:text="April 2023"
+        android:textColor="#FF8D45"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/prevBtn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:fontFamily="@font/crimson_pro"
+        android:text="@string/nextBtn"
+        android:textColor="#FF8D45"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/monthView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:stretchColumns="0,1,2,3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/transactionView"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/transaction_icon"
+                android:foregroundGravity="center"
+                android:onClick="onClick"
+                app:srcCompat="@mipmap/transaction_foreground" />
+
+            <ImageView
+                android:id="@+id/statsView"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/transaction_icon"
+                android:foregroundGravity="center"
+                android:onClick="onClick"
+                app:srcCompat="@mipmap/graph_foreground" />
+
+            <ImageView
+                android:id="@+id/goalsView"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/transaction_icon"
+                android:foregroundGravity="center"
+                app:srcCompat="@mipmap/goals_foreground" />
+
+            <ImageView
+                android:id="@+id/profileView"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/transaction_icon"
+                android:foregroundGravity="center"
+                android:onClick="onClick"
+                app:srcCompat="@mipmap/profile_foreground" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/homeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/crimson_pro"
+                android:gravity="center"
+                android:text="@string/home"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/statsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/crimson_pro"
+                android:gravity="center"
+                android:text="@string/stats"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/goalsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/crimson_pro"
+                android:gravity="center"
+                android:text="@string/goals"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/profileText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/crimson_pro"
+                android:gravity="center"
+                android:text="@string/profile"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </TableRow>
+
+    </TableLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addTransactionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:contentDescription="@string/add_transactions"
+        android:onClick="onClick"
+        android:src="@mipmap/plus_foreground"
+        app:backgroundTint="#FF8D45"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

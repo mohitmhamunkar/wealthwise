@@ -30,5 +30,11 @@ public class MainActivity extends AppCompatActivity {
         if(clickId == R.id.statsView) {
             startActivity(new Intent(this, StatsActivity.class));
         }
+        if(clickId == R.id.goalsView) {
+            startActivity(new Intent(this, GoalsActivity.class));
+        }
+        if(clickId == R.id.profileView) {
+            //TODO
+        }
     }
 }

@@ -5,8 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0B223D"
-    tools:context=".StatsActivity">
+    tools:context=".GoalsActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/prevBtn"
@@ -45,88 +53,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="50dp"
-        android:stretchColumns="0,1,2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/income"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/crimson_pro"
-                android:gravity="center"
-                android:text="@string/income"
-                android:textColor="#FF8D45"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/expense"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/crimson_pro"
-                android:gravity="center"
-                android:text="@string/expenses"
-                android:textColor="#FF8D45"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/crimson_pro"
-                android:gravity="center"
-                android:text="@string/total"
-                android:textColor="#FF8D45"
-                android:textSize="20sp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/incomeAmt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/crimson_pro"
-                android:gravity="center"
-                android:text="0.00"
-                android:textColor="@android:color/holo_green_light"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/expenseAmt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/crimson_pro"
-                android:gravity="center"
-                android:text="0.00"
-                android:textColor="@android:color/holo_red_light"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/totalAmt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/crimson_pro"
-                android:gravity="center"
-                android:text="0.00"
-                android:textSize="20sp" />
-
-        </TableRow>
-
-    </TableLayout>
-
-    <TableLayout
-        android:id="@+id/tableLayout2"
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:stretchColumns="0,1,2,3"
@@ -154,6 +80,7 @@
                 android:layout_height="80dp"
                 android:contentDescription="@string/transaction_icon"
                 android:foregroundGravity="center"
+                android:onClick="onClick"
                 app:srcCompat="@mipmap/graph_foreground" />
 
             <ImageView
@@ -162,7 +89,6 @@
                 android:layout_height="80dp"
                 android:contentDescription="@string/transaction_icon"
                 android:foregroundGravity="center"
-                android:onClick="onClick"
                 app:srcCompat="@mipmap/goals_foreground" />
 
             <ImageView
@@ -223,40 +149,20 @@
 
     </TableLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="363dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="100dp"
-        android:background="#0E2D51"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addTransactionBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:contentDescription="@string/add_transactions"
+        android:onClick="onClick"
+        android:src="@mipmap/plus_foreground"
+        app:backgroundTint="#FF8D45"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.961"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <org.eazegraph.lib.charts.PieChart
-                android:id="@+id/piechart"
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_weight="1"
-                android:layerType="none"
-                android:padding="15dp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.642" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

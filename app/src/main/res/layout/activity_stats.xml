@@ -145,6 +145,7 @@
                 android:layout_height="80dp"
                 android:contentDescription="@string/transaction_icon"
                 android:foregroundGravity="center"
+                android:onClick="onClick"
                 app:srcCompat="@mipmap/transaction_foreground" />
 
             <ImageView
@@ -161,6 +162,7 @@
                 android:layout_height="80dp"
                 android:contentDescription="@string/transaction_icon"
                 android:foregroundGravity="center"
+                android:onClick="onClick"
                 app:srcCompat="@mipmap/goals_foreground" />
 
             <ImageView
@@ -169,6 +171,7 @@
                 android:layout_height="80dp"
                 android:contentDescription="@string/transaction_icon"
                 android:foregroundGravity="center"
+                android:onClick="onClick"
                 app:srcCompat="@mipmap/profile_foreground" />
 
         </TableRow>

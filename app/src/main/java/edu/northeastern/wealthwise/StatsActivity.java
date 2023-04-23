@@ -2,8 +2,10 @@ package edu.northeastern.wealthwise;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,5 +47,18 @@ public class StatsActivity extends AppCompatActivity {
                         Color.parseColor("#29B6F6")));
         pieChart.startAnimation();
         pieChart.setLabelFor(0);
+    }
+
+    public void onClick(View view){
+        int clickId = view.getId();
+        if(clickId == R.id.transactionView) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        if(clickId == R.id.goalsView) {
+            startActivity(new Intent(this, GoalsActivity.class));
+        }
+        if(clickId == R.id.profileView) {
+            //TODO
+        }
     }
 }
