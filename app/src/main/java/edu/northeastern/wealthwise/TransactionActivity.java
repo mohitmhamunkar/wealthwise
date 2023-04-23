@@ -5,28 +5,54 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
+import edu.northeastern.wealthwise.datamodels.ExpenseTransaction;
+import edu.northeastern.wealthwise.datamodels.IncomeTransaction;
+
 public class TransactionActivity extends AppCompatActivity {
+
+    private FirebaseDatabase mDatabase;
+    private FirebaseAuth mAuth;
     private Spinner categorySpinner;
     private Spinner accountSpinner;
     private TextView datePicker;
     private Button incomeBtn;
     private Button expenseBtn;
     private String transType;
+    private EditText amountValue;
+    private EditText noteValue;
     final Calendar c = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
+
+        mDatabase = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         categorySpinner = findViewById(R.id.categorySpinner);
         accountSpinner = findViewById(R.id.accountSpinner);
         datePicker = findViewById(R.id.datePicker);
@@ -43,6 +69,43 @@ public class TransactionActivity extends AppCompatActivity {
                 R.array.account_array, R.layout.spinner_list);
         adapter.setDropDownViewResource(R.layout.spinner_list);
         accountSpinner.setAdapter(acAdapter);
+
+        amountValue = findViewById(R.id.amountValue);
+        noteValue = findViewById(R.id.noteValue);
+
+        Button saveButton = findViewById(R.id.saveBtn);
+        saveButton.setOnClickListener(v -> updateTransaction());
+
+
+    }
+
+    private void updateTransaction() {
+        if(TextUtils.isEmpty(String.valueOf(amountValue.getText()))) {
+            Toast.makeText(TransactionActivity.this, "Please enter Amount of transaction!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String dot = String.valueOf(datePicker.getText());
+        double amt = Double.parseDouble(String.valueOf(amountValue.getText()));
+        String cat = String.valueOf(categorySpinner.getSelectedItem());
+        String acc = String.valueOf(accountSpinner.getSelectedItem());
+        String note = String.valueOf(noteValue.getText());
+
+        DatabaseReference ref = mDatabase.getReference();
+        String uid = mAuth.getUid();
+
+        if (transType.equals("Expense")) {
+            ExpenseTransaction expTxn = new ExpenseTransaction(dot, amt, cat, acc, note);
+            ref.child("expenseTransactions").child(uid).push().setValue(expTxn);
+        }
+        else {
+            IncomeTransaction incTxn = new IncomeTransaction(dot, amt, cat, acc, note);
+            ref.child("incomeTransactions").child(uid).push().setValue(incTxn);
+        }
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void onClick(View view) {
@@ -69,6 +132,7 @@ public class TransactionActivity extends AppCompatActivity {
                     R.array.expenseCat_array, R.layout.spinner_list);
             adapter.setDropDownViewResource(R.layout.spinner_list);
             categorySpinner.setAdapter(adapter);
+            transType = "Expense";
         }
         if (clickId == R.id.incomeBtn) {
             incomeBtn.setTextColor(getResources().getColor(android.R.color.holo_green_light));
@@ -76,7 +140,8 @@ public class TransactionActivity extends AppCompatActivity {
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                     R.array.incomeCat_array, R.layout.spinner_list);
             adapter.setDropDownViewResource(R.layout.spinner_list);
-            categorySpinner.setAdapter(adapter);;
+            categorySpinner.setAdapter(adapter);
+            transType = "Income";
         }
     }
 }
