@@ -24,7 +24,7 @@ public class GoalsActivity extends AppCompatActivity {
     public void onClick(View view){
         int clickId = view.getId();
         if(clickId == R.id.addTransactionBtn) {
-            //TODO
+            startActivity(new Intent(this, AddGoalsActivity.class));
         }
         if(clickId == R.id.transactionView) {
             startActivity(new Intent(this, MainActivity.class));
