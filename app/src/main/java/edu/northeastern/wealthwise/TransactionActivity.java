@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,8 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-import edu.northeastern.wealthwise.datamodels.ExpenseTransaction;
-import edu.northeastern.wealthwise.datamodels.IncomeTransaction;
+import edu.northeastern.wealthwise.datamodels.Transaction;
 
 public class TransactionActivity extends AppCompatActivity {
 
@@ -85,6 +83,7 @@ public class TransactionActivity extends AppCompatActivity {
             return;
         }
 
+        String txnType = transType;
         String dot = String.valueOf(datePicker.getText());
         double amt = Double.parseDouble(String.valueOf(amountValue.getText()));
         String cat = String.valueOf(categorySpinner.getSelectedItem());
@@ -94,14 +93,10 @@ public class TransactionActivity extends AppCompatActivity {
         DatabaseReference ref = mDatabase.getReference();
         String uid = mAuth.getUid();
 
-        if (transType.equals("Expense")) {
-            ExpenseTransaction expTxn = new ExpenseTransaction(dot, amt, cat, acc, note);
-            ref.child("expenseTransactions").child(uid).push().setValue(expTxn);
-        }
-        else {
-            IncomeTransaction incTxn = new IncomeTransaction(dot, amt, cat, acc, note);
-            ref.child("incomeTransactions").child(uid).push().setValue(incTxn);
-        }
+        Transaction txn = new Transaction(txnType, dot, amt, cat, acc, note);
+        String pushKey = ref.child("transactions").child(uid).push().getKey();
+        txn.setTxnId(pushKey);
+        ref.child("transactions").child(uid).child(pushKey).setValue(txn);
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
@@ -115,14 +110,11 @@ public class TransactionActivity extends AppCompatActivity {
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth) {
-                            datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
-                        }
-                    }, year, month, day);
+                    (view1, year1, monthOfYear, dayOfMonth) ->
+                            datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1),
+                    year,
+                    month,
+                    day);
             datePickerDialog.show();
         }
         if(clickId == R.id.expenseBtn) {
