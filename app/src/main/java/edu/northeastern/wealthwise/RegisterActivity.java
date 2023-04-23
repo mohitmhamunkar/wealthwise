@@ -35,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        fullName = findViewById(R.id.name);
+        fullName = findViewById(R.id.newPass);
         username = findViewById(R.id.userName);
         password = findViewById(R.id.pass);
         confirmPasswd = findViewById(R.id.confirmPass);
