@@ -29,7 +29,9 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.northeastern.wealthwise.datamodels.StatsItem;
 import edu.northeastern.wealthwise.datamodels.TotalValues;
@@ -53,6 +55,7 @@ public class StatsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private StatsRecyclerViewAdapter recyclerViewAdapter;
     private final List<StatsItem> statsItemsList = new ArrayList<>();
+    private Map<String, String> colorMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +78,27 @@ public class StatsActivity extends AppCompatActivity {
         statsView.setImageResource(R.mipmap.graph_selected_foreground);
         pieChart = findViewById(R.id.piechart);
 
+        colorMap = new HashMap<>();
+        initColorMap();
+
         createStatsRecyclerView();
         updateTotalValues();
         updateStatsRecyclerViewWithDB();
         updatePieChart();
+    }
+    private void initColorMap() {
+        colorMap.put("Food", "#e60049");
+        colorMap.put("Social Life", "#0bb4ff");
+        colorMap.put("Pets", "#50e991");
+        colorMap.put("Transport", "#e6d800");
+        colorMap.put("Culture", "#9b19f5");
+        colorMap.put("Household", "#ffa300");
+        colorMap.put("Apparel", "#dc0ab4");
+        colorMap.put("Beauty", "#b3d4ff");
+        colorMap.put("Health", "#00bfa0");
+        colorMap.put("Education", "#b33dc6");
+        colorMap.put("Gift", "#87bc45");
+        colorMap.put("Other", "#f46a9b");
     }
 
     private void updateStatsRecyclerViewWithDB() {
@@ -106,6 +126,7 @@ public class StatsActivity extends AppCompatActivity {
                                 String amount = String.valueOf(txn.getAmount());
                                 StatsItem newItem = new StatsItem(percentage, category, amount);
                                 statsItemsList.add(0, newItem);
+//                                updatePieChart(category, );
                             }
                         }
                         recyclerViewAdapter.notifyDataSetChanged();

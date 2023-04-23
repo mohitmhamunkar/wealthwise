@@ -2,11 +2,9 @@ package edu.northeastern.wealthwise;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,14 +12,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -92,19 +87,9 @@ public class ProfileActivity extends AppCompatActivity {
         EditText newPass = (EditText) promptView.findViewById(R.id.newPass);
         EditText conPass = (EditText) promptView.findViewById(R.id.conPass);
         Snackbar error = Snackbar.make(view, "Empty Password", Snackbar.LENGTH_LONG).setAction
-                ("Retry", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DialogBox(view);
-                    }
-                });
+                ("Retry", v -> DialogBox(view));
         Snackbar errorMismatch = Snackbar.make(view, "Password Doesn't Match", Snackbar.LENGTH_LONG).setAction
-                ("Retry", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DialogBox(view);
-                    }
-                });
+                ("Retry", v -> DialogBox(view));
         Snackbar cancel = Snackbar.make(view, "Operation Cancelled", Snackbar.LENGTH_LONG);
         Snackbar success = Snackbar.make(view, "Password Changed Sucessfully!", Snackbar.LENGTH_LONG);
         alertDialogBuilder
@@ -134,11 +119,9 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 })
                 .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                                cancel.show();
-                            }
+                        (dialog, id) -> {
+                            dialog.cancel();
+                            cancel.show();
                         });
         AlertDialog alertD = alertDialogBuilder.create();
         alertD.show();
