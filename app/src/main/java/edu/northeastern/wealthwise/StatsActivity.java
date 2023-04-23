@@ -1,7 +1,6 @@
 package edu.northeastern.wealthwise;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -84,7 +82,6 @@ public class StatsActivity extends AppCompatActivity {
         createStatsRecyclerView();
         updateTotalValues();
         updateStatsRecyclerViewWithDB();
-        updatePieChart();
     }
     private void initColorMap() {
         colorMap.put("Food", "#e60049");
@@ -102,6 +99,7 @@ public class StatsActivity extends AppCompatActivity {
     }
 
     private void updateStatsRecyclerViewWithDB() {
+        pieChart.clearChart();
         statsItemsList.clear();
         recyclerViewAdapter.notifyDataSetChanged();
         mDatabase.getReference()
@@ -118,17 +116,25 @@ public class StatsActivity extends AppCompatActivity {
                                 totalExpense += txn.getAmount();
                             }
                         }
+                        Map<String, Double> itemPrice = new HashMap<>();
                         for (DataSnapshot txnSnapshot: snapshot.getChildren()) {
                             Transaction txn = txnSnapshot.getValue(Transaction.class);
                             if (txn.getTxnType().equals("Expense")) {
-                                String percentage = String.valueOf((txn.getAmount()/totalExpense)*100);
-                                String category = String.valueOf(txn.getTxnCategory());
-                                String amount = String.valueOf(txn.getAmount());
-                                StatsItem newItem = new StatsItem(percentage, category, amount);
-                                statsItemsList.add(0, newItem);
-//                                updatePieChart(category, );
+                                String category = txn.getTxnCategory();
+                                itemPrice.put(category,
+                                        itemPrice.getOrDefault(category, 0.0) + txn.getAmount());
+
                             }
                         }
+                        for (String category : itemPrice.keySet()) {
+                            double amountDouble = itemPrice.get(category);
+                            String amount = String.valueOf(amountDouble);
+                            String percentage = String.valueOf((amountDouble/totalExpense)*100);
+                            StatsItem newItem = new StatsItem(percentage, category, amount);
+                            statsItemsList.add(0, newItem);
+                            updatePieChart(category, (amountDouble/totalExpense)*100);
+                        }
+                        startAnimation();
                         recyclerViewAdapter.notifyDataSetChanged();
                     }
 
@@ -191,27 +197,16 @@ public class StatsActivity extends AppCompatActivity {
         });
     }
 
-    private void updatePieChart() {
+    private void updatePieChart(String category, double percentage) {
         pieChart.addPieSlice(
                 new PieModel(
-                        "R",
-                        40,
-                        Color.parseColor("#FFA726")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "Python",
-                        30,
-                        Color.parseColor("#66BB6A")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "C++",
-                        5,
-                        Color.parseColor("#EF5350")));
-        pieChart.addPieSlice(
-                new PieModel(
-                        "Java",
-                        25,
-                        Color.parseColor("#29B6F6")));
+                        category,
+                        (float) percentage,
+                        Color.parseColor(colorMap.get(category))));
+
+    }
+
+    private void startAnimation() {
         pieChart.startAnimation();
         pieChart.setLabelFor(0);
     }
