@@ -1,53 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
     app:cardBackgroundColor="#0E2D51"
     app:cardCornerRadius="15dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp">
+        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/percentage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:backgroundTint="@color/material_dynamic_primary80"
             android:fontFamily="@font/crimson_pro"
             android:text="52%"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="120dp"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/crimson_pro"
             android:text="Transaction"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_toRightOf="@id/category"
+            android:layout_marginEnd="30dp"
             android:fontFamily="@font/crimson_pro"
             android:text="$500.00"
             android:textColor="@android:color/holo_green_light"
             android:textSize="18sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>
