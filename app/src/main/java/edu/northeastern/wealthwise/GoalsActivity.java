@@ -33,7 +33,7 @@ public class GoalsActivity extends AppCompatActivity {
             startActivity(new Intent(this, StatsActivity.class));
         }
         if(clickId == R.id.profileView) {
-            //TODO
+            startActivity(new Intent(this, ProfileActivity.class));
         }
     }
 }

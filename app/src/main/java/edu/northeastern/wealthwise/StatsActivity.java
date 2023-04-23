@@ -58,7 +58,7 @@ public class StatsActivity extends AppCompatActivity {
             startActivity(new Intent(this, GoalsActivity.class));
         }
         if(clickId == R.id.profileView) {
-            //TODO
+            startActivity(new Intent(this, ProfileActivity.class));
         }
     }
 }
