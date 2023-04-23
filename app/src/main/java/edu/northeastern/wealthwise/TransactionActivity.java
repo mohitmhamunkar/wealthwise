@@ -141,7 +141,7 @@ public class TransactionActivity extends AppCompatActivity {
             int day = c.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                     (view1, year1, monthOfYear, dayOfMonth) ->
-                            datePicker.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1),
+                            datePicker.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year1),
                     year,
                     month,
                     day);
