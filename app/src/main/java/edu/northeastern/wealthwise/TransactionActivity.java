@@ -1,5 +1,6 @@
 package edu.northeastern.wealthwise;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -14,13 +15,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
+import edu.northeastern.wealthwise.datamodels.TotalValues;
 import edu.northeastern.wealthwise.datamodels.Transaction;
 
 public class TransactionActivity extends AppCompatActivity {
@@ -92,8 +97,33 @@ public class TransactionActivity extends AppCompatActivity {
 
         DatabaseReference ref = mDatabase.getReference();
         String uid = mAuth.getUid();
-
+        final TotalValues[] totalValues = {new TotalValues()};
         Transaction txn = new Transaction(txnType, dot, amt, cat, acc, note);
+        ref.child("totalValues").child(uid).get().addOnCompleteListener(task -> {
+            totalValues[0] = task.getResult().getValue(TotalValues.class);
+            if (totalValues[0] != null) {
+                double prevIncome = totalValues[0].getIncome();
+                double prevExpense = totalValues[0].getExpense();
+
+                if (txnType.equals("Income")) {
+                    totalValues[0].setIncome(prevIncome + amt);
+                }
+                else {
+                    totalValues[0].setExpense(prevExpense + amt);
+                }
+                totalValues[0].setTotal(totalValues[0].getIncome() - totalValues[0].getExpense());
+            }
+            else {
+                if (txnType.equals("Income")) {
+                    totalValues[0] = new TotalValues(amt, 0 , amt);
+                }
+                else {
+                    totalValues[0] = new TotalValues(0, amt , amt);
+                }
+
+            }
+            ref.child("totalValues").child(uid).setValue(totalValues[0]);
+        });
         String pushKey = ref.child("transactions").child(uid).push().getKey();
         txn.setTxnId(pushKey);
         ref.child("transactions").child(uid).child(pushKey).setValue(txn);
