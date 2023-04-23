@@ -32,7 +32,12 @@ public class MainRecyclerViewAdapter  extends RecyclerView.Adapter<MainRecyclerV
         holder.category.setText(currentTxn.getTxnCategory());
         holder.accounts.setText(currentTxn.getAccountCategory());
         holder.amount.setText("$"+ currentTxn.getAmount());
-        holder.note.setText(currentTxn.getNote());
+        if (!currentTxn.getNote().equals("")) {
+            holder.note.setText("Note: " + currentTxn.getNote());
+        }
+        else {
+            holder.note.setText("");
+        }
     }
 
     @Override
