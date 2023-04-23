@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +19,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Calendar;
 
 import edu.northeastern.wealthwise.datamodels.TotalValues;
 
@@ -32,6 +38,10 @@ public class StatsActivity extends AppCompatActivity {
     private TextView incAmount;
     private TextView expAmount;
     private TextView totalAmount;
+
+    private Button prevButton;
+    private Button nextButton;
+    private TextView monthView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +50,11 @@ public class StatsActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getUid();
-
-        updateTotalValues();
-
+        monthView = findViewById(R.id.monthView);
+        prevButton = findViewById(R.id.prevBtn);
+        prevButton.setOnClickListener(v -> moveMonth(false));
+        nextButton = findViewById(R.id.nextBtn);
+        nextButton.setOnClickListener(v -> moveMonth(true));
         incAmount = findViewById(R.id.incomeAmt);
         expAmount = findViewById(R.id.expenseAmt);
         totalAmount = findViewById(R.id.totalAmt);
@@ -51,7 +63,8 @@ public class StatsActivity extends AppCompatActivity {
         statsText.setTextColor(Color.parseColor("#FF8D45"));
         statsView.setImageResource(R.mipmap.graph_selected_foreground);
         pieChart = findViewById(R.id.piechart);
-        
+
+        updateTotalValues();
         updatePieChart();
         
         pieChart.addPieSlice(
@@ -78,8 +91,32 @@ public class StatsActivity extends AppCompatActivity {
         pieChart.setLabelFor(0);
     }
 
+    private void moveMonth(boolean up) {
+        String currentMonth = monthView.getText().toString().split(" ")[0];
+        String currentYear = monthView.getText().toString().split(" ")[1];
+        Calendar c = Calendar.getInstance();
+        c.set(Integer.parseInt(currentYear), Month.valueOf(currentMonth.toUpperCase()).getValue()-1, LocalDate.now().getDayOfMonth());
+        if (c.get(Calendar.MONTH) == Calendar.DECEMBER) {
+            c.set(Calendar.MONTH, Calendar.JANUARY);
+            if (up) {
+                c.set(Calendar.YEAR, c.get(Calendar.YEAR) + 1);
+            }
+            else {
+                c.set(Calendar.YEAR, c.get(Calendar.YEAR) - 1);
+            }
+        } else {
+            c.roll(Calendar.MONTH, up);
+        }
+        String newMonth = new SimpleDateFormat("MMMM").format(c.getTime());
+        monthView.setText(newMonth +" "+ c.get(Calendar.YEAR));
+        updateTotalValues();
+    }
+
     private void updateTotalValues() {
-        mDatabase.getReference().child("totalValues").child(uid).addValueEventListener(new ValueEventListener() {
+        incAmount.setText("");
+        expAmount.setText("");
+        totalAmount.setText("");
+        mDatabase.getReference().child("totalValues").child(uid).child(monthView.getText().toString().toUpperCase().replaceAll("\\s", "")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 TotalValues values = snapshot.getValue(TotalValues.class);

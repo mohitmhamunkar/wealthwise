@@ -1,6 +1,5 @@
 package edu.northeastern.wealthwise;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -15,14 +14,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 import edu.northeastern.wealthwise.datamodels.TotalValues;
@@ -63,7 +62,17 @@ public class TransactionActivity extends AppCompatActivity {
         expenseBtn = findViewById(R.id.expenseBtn);
         transType = "Expense";
         expenseBtn.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-        datePicker.setText(c.get(Calendar.MONTH) + "/" + c.get(Calendar.DAY_OF_MONTH) + "/" + c.get(Calendar.YEAR));
+        int month = c.get(Calendar.MONTH)+1;
+        String monthStr = ""+month;
+        if (month < 9) {
+            monthStr = "0" + month;
+        }
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        String dayStr = ""+day;
+        if (day < 10) {
+            dayStr = "0" + day;
+        }
+        datePicker.setText(monthStr + "/" + dayStr + "/" + c.get(Calendar.YEAR));
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.expenseCat_array, R.layout.spinner_list);
         adapter.setDropDownViewResource(R.layout.spinner_list);
@@ -77,19 +86,31 @@ public class TransactionActivity extends AppCompatActivity {
         noteValue = findViewById(R.id.noteValue);
 
         Button saveButton = findViewById(R.id.saveBtn);
-        saveButton.setOnClickListener(v -> updateTransaction());
+        saveButton.setOnClickListener(v -> {
+            try {
+                updateTransaction();
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
 
     }
 
-    private void updateTransaction() {
+    private void updateTransaction() throws ParseException {
         if(TextUtils.isEmpty(String.valueOf(amountValue.getText()))) {
             Toast.makeText(TransactionActivity.this, "Please enter Amount of transaction!", Toast.LENGTH_LONG).show();
             return;
         }
 
         String txnType = transType;
+
+        //Creating node string for date
         String dot = String.valueOf(datePicker.getText());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(dot, formatter);
+        String nodeDate = date.getMonth().toString()+date.getYear();
+
         double amt = Double.parseDouble(String.valueOf(amountValue.getText()));
         String cat = String.valueOf(categorySpinner.getSelectedItem());
         String acc = String.valueOf(accountSpinner.getSelectedItem());
@@ -99,7 +120,7 @@ public class TransactionActivity extends AppCompatActivity {
         String uid = mAuth.getUid();
         final TotalValues[] totalValues = {new TotalValues()};
         Transaction txn = new Transaction(txnType, dot, amt, cat, acc, note);
-        ref.child("totalValues").child(uid).get().addOnCompleteListener(task -> {
+        ref.child("totalValues").child(uid).child(nodeDate).get().addOnCompleteListener(task -> {
             totalValues[0] = task.getResult().getValue(TotalValues.class);
             if (totalValues[0] != null) {
                 double prevIncome = totalValues[0].getIncome();
@@ -122,11 +143,11 @@ public class TransactionActivity extends AppCompatActivity {
                 }
 
             }
-            ref.child("totalValues").child(uid).setValue(totalValues[0]);
+            ref.child("totalValues").child(uid).child(nodeDate).setValue(totalValues[0]);
         });
-        String pushKey = ref.child("transactions").child(uid).push().getKey();
+        String pushKey = ref.child("transactions").child(uid).child(nodeDate).push().getKey();
         txn.setTxnId(pushKey);
-        ref.child("transactions").child(uid).child(pushKey).setValue(txn);
+        ref.child("transactions").child(uid).child(nodeDate).child(pushKey).setValue(txn);
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
@@ -140,8 +161,18 @@ public class TransactionActivity extends AppCompatActivity {
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    (view1, year1, monthOfYear, dayOfMonth) ->
-                            datePicker.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year1),
+                    (view1, year1, monthOfYear, dayOfMonth) -> {
+                        monthOfYear++;
+                        String monthStr = ""+monthOfYear;
+                        if (monthOfYear < 10) {
+                            monthStr = "0" + monthOfYear;
+                        }
+                        String dayStr = ""+dayOfMonth;
+                        if (dayOfMonth < 10) {
+                            dayStr = "0" + dayOfMonth;
+                        }
+                        datePicker.setText(monthStr + "/" + dayStr + "/" + year1);
+                    },
                     year,
                     month,
                     day);

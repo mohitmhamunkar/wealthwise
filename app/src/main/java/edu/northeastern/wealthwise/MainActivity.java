@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,7 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.northeastern.wealthwise.datamodels.TotalValues;
@@ -45,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MainRecyclerViewAdapter recyclerViewAdapter;
     private final List<Transaction> transactionList = new ArrayList<>();
+    private Button prevButton;
+    private Button nextButton;
+    private TextView monthView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +61,25 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getUid();
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser == null){
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
             finish();
         }
+
+        monthView = findViewById(R.id.monthView);
+        prevButton = findViewById(R.id.prevBtn);
+        prevButton.setOnClickListener(v -> moveMonth(savedInstanceState, false));
+        nextButton = findViewById(R.id.nextBtn);
+        nextButton.setOnClickListener(v -> moveMonth(savedInstanceState, true));
+        incAmount = findViewById(R.id.incomeAmt);
+        expAmount = findViewById(R.id.expenseAmt);
+        totalAmount = findViewById(R.id.totalAmt);
+        home = findViewById(R.id.transactionView);
+        homeText = findViewById(R.id.homeText);
+        home.setImageResource(R.mipmap.transaction_selected_foreground);
+        homeText.setTextColor(Color.parseColor("#FF8D45"));
 
         createTransactionsRecyclerView();
         updateRecyclerViewWithDB();
@@ -82,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     mDatabase.getReference()
                             .child("transactions")
                             .child(uid)
+                            .child(monthView.getText().toString().toUpperCase().replaceAll("\\s", ""))
                             .child(currentTxn.getTxnId()).removeValue();
                     updateTotalValuesOnDeletion(currentTxn);
                     Snackbar.make(recyclerView, "Transaction Deleted!", Snackbar.LENGTH_LONG)
@@ -94,20 +115,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
 
-        incAmount = findViewById(R.id.incomeAmt);
-        expAmount = findViewById(R.id.expenseAmt);
-        totalAmount = findViewById(R.id.totalAmt);
-        home = findViewById(R.id.transactionView);
-        homeText = findViewById(R.id.homeText);
-        home.setImageResource(R.mipmap.transaction_selected_foreground);
-        homeText.setTextColor(Color.parseColor("#FF8D45"));
+    private void moveMonth(Bundle savedInstanceState, boolean up) {
+        String currentMonth = monthView.getText().toString().split(" ")[0];
+        String currentYear = monthView.getText().toString().split(" ")[1];
+        Calendar c = Calendar.getInstance();
+        c.set(Integer.parseInt(currentYear), Month.valueOf(currentMonth.toUpperCase()).getValue()-1, LocalDate.now().getDayOfMonth());
+        if (c.get(Calendar.MONTH) == Calendar.DECEMBER) {
+            c.set(Calendar.MONTH, Calendar.JANUARY);
+            if (up) {
+                c.set(Calendar.YEAR, c.get(Calendar.YEAR) + 1);
+            }
+            else {
+                c.set(Calendar.YEAR, c.get(Calendar.YEAR) - 1);
+            }
+        } else {
+            c.roll(Calendar.MONTH, up);
+        }
+        String newMonth = new SimpleDateFormat("MMMM").format(c.getTime());
+        monthView.setText(newMonth +" "+ c.get(Calendar.YEAR));
+        updateTotalValues();
+        updateRecyclerViewWithDB();
     }
 
     private void updateTotalValuesOnDeletion(Transaction txn) {
         final TotalValues[] totalValues = {new TotalValues()};
         DatabaseReference ref = mDatabase.getReference();
-        ref.child("totalValues").child(uid).get().addOnCompleteListener(task -> {
+        ref.child("totalValues").child(uid).child(monthView.getText().toString().toUpperCase().replaceAll("\\s", "")).get().addOnCompleteListener(task -> {
             totalValues[0] = task.getResult().getValue(TotalValues.class);
             if (totalValues[0] != null) {
                 double prevIncome = totalValues[0].getIncome();
@@ -121,12 +156,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 totalValues[0].setTotal(totalValues[0].getIncome() - totalValues[0].getExpense());
             }
-            ref.child("totalValues").child(uid).setValue(totalValues[0]);
+            ref.child("totalValues").child(uid).child(monthView.getText().toString().toUpperCase().replaceAll("\\s", "")).setValue(totalValues[0]);
         });
     }
 
     private void updateTotalValues() {
-        mDatabase.getReference().child("totalValues").child(uid).addValueEventListener(new ValueEventListener() {
+        incAmount.setText("");
+        expAmount.setText("");
+        totalAmount.setText("");
+        mDatabase.getReference().child("totalValues").child(uid).child(monthView.getText().toString().toUpperCase().replaceAll("\\s", "")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 TotalValues values = snapshot.getValue(TotalValues.class);
@@ -145,7 +183,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateRecyclerViewWithDB() {
-        mDatabase.getReference().child("transactions").child(uid).addChildEventListener(new ChildEventListener() {
+        transactionList.clear();
+        recyclerViewAdapter.notifyDataSetChanged();
+        mDatabase.getReference().child("transactions").child(uid).child(monthView.getText().toString().toUpperCase().replaceAll("\\s", "")).addChildEventListener(new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
