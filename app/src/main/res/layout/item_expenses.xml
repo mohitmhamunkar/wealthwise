@@ -19,10 +19,10 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:backgroundTint="@color/material_dynamic_primary80"
+            android:backgroundTint="#76D1FF"
             android:fontFamily="@font/crimson_pro"
             android:text="52%"
-            android:textColor="@color/black"
+            android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/category"
+            android:id="@+id/categoryExpense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
@@ -44,7 +44,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/amount"
+            android:id="@+id/amountExpense"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
