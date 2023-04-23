@@ -2,7 +2,9 @@ package edu.northeastern.wealthwise;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -17,5 +19,12 @@ public class AddGoalsActivity extends AppCompatActivity {
                 R.array.expenseCat_array, R.layout.spinner_list);
         adapter.setDropDownViewResource(R.layout.spinner_list);
         categorySpinner.setAdapter(adapter);
+    }
+
+    public void onClick(View view) {
+        int clickId = view.getId();
+        if(clickId == R.id.saveBtn) {
+            startActivity(new Intent(this, GoalsActivity.class));
+        }
     }
 }

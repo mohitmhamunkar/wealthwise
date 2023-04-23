@@ -91,6 +91,7 @@
         android:layout_marginTop="420dp"
         android:background="@drawable/round_shape_btn"
         android:fontFamily="@font/crimson_pro"
+        android:onClick="onClick"
         android:padding="10dp"
         android:text="@string/save"
         android:textColor="@color/white"
