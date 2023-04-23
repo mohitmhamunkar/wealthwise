@@ -132,8 +132,7 @@
         android:stretchColumns="0,1,2,3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TableRow
             android:layout_width="match_parent"
@@ -229,6 +228,7 @@
         android:layout_height="200dp"
         android:layout_marginTop="100dp"
         android:background="#0E2D51"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -241,6 +241,7 @@
 
             <org.eazegraph.lib.charts.PieChart
                 android:id="@+id/piechart"
+                android:background="#0E2D51"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_weight="1"

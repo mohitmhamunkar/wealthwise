@@ -240,6 +240,7 @@
 
             <org.eazegraph.lib.charts.PieChart
                 android:id="@+id/piechart"
+                android:background="#0E2D51"
                 android:layout_width="0dp"
                 android:layout_height="270dp"
                 android:padding="15dp"
