@@ -21,4 +21,10 @@
     <string name="goals">Goals</string>
     <string name="profile">Profile</string>
     <string name="add_transactions">Add Transactions</string>
+    <string name="date">Date:</string>
+    <string name="account">Account:</string>
+    <string name="category">Category:</string>
+    <string name="amount">Amount:</string>
+    <string name="note">Note:</string>
+    <string name="save">Save</string>
 </resources>
