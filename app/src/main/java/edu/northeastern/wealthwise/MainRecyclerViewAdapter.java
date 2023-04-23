@@ -31,6 +31,9 @@ public class MainRecyclerViewAdapter  extends RecyclerView.Adapter<MainRecyclerV
         holder.date.setText(currentTxn.getDateOfTransaction());
         holder.category.setText(currentTxn.getTxnCategory());
         holder.accounts.setText(currentTxn.getAccountCategory());
+        if (currentTxn.getTxnType().equals("Expense")) {
+            holder.amount.setTextColor(0Xffff4444);
+        }
         holder.amount.setText("$"+ currentTxn.getAmount());
         if (!currentTxn.getNote().equals("")) {
             holder.note.setText("Note: " + currentTxn.getNote());
