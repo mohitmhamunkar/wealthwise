@@ -122,15 +122,15 @@ public class MainActivity extends AppCompatActivity {
         String currentYear = monthView.getText().toString().split(" ")[1];
         Calendar c = Calendar.getInstance();
         c.set(Integer.parseInt(currentYear), Month.valueOf(currentMonth.toUpperCase()).getValue()-1, LocalDate.now().getDayOfMonth());
-        if (c.get(Calendar.MONTH) == Calendar.DECEMBER) {
+        if (c.get(Calendar.MONTH) == Calendar.DECEMBER && up) {
             c.set(Calendar.MONTH, Calendar.JANUARY);
-            if (up) {
-                c.set(Calendar.YEAR, c.get(Calendar.YEAR) + 1);
-            }
-            else {
-                c.set(Calendar.YEAR, c.get(Calendar.YEAR) - 1);
-            }
-        } else {
+            c.set(Calendar.YEAR, c.get(Calendar.YEAR) + 1);
+        }
+        else if (c.get(Calendar.MONTH) == Calendar.JANUARY && !up) {
+            c.set(Calendar.MONTH, Calendar.DECEMBER);
+            c.set(Calendar.YEAR, c.get(Calendar.YEAR) - 1);
+        }
+        else {
             c.roll(Calendar.MONTH, up);
         }
         String newMonth = new SimpleDateFormat("MMMM").format(c.getTime());
