@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.northeastern.wealthwise.datamodels.GoalsItem;
 import edu.northeastern.wealthwise.datamodels.StatsItem;
 import edu.northeastern.wealthwise.datamodels.TotalValues;
 import edu.northeastern.wealthwise.datamodels.Transaction;
@@ -127,6 +128,13 @@ public class StatsActivity extends AppCompatActivity {
                             }
                         }
                         for (String category : itemPrice.keySet()) {
+                            mDatabase.getReference()
+                                    .child("categoryExpenses")
+                                    .child(uid)
+                                    .child(monthView.getText().toString().toUpperCase().replaceAll("\\s", ""))
+                                    .child(category)
+                                    .setValue(itemPrice.get(category));
+
                             double amountDouble = itemPrice.get(category);
                             String amount = String.valueOf(amountDouble);
                             String percentage = String.valueOf((amountDouble/totalExpense)*100);

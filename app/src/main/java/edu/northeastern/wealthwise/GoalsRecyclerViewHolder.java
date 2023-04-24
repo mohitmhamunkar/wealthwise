@@ -16,5 +16,6 @@ public class GoalsRecyclerViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
         category = itemView.findViewById(R.id.categoryGoal);
         colorCircle = itemView.findViewById(R.id.circleView);
+        amount = itemView.findViewById(R.id.amountGoal);
     }
 }
