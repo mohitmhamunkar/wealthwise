@@ -132,7 +132,8 @@
         android:stretchColumns="0,1,2,3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewStats">
 
         <TableRow
             android:layout_width="match_parent"
@@ -251,6 +252,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewStats"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="100dp"
