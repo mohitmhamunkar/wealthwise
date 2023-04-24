@@ -17,7 +17,7 @@ Canvas Name: Aakash Singh\
 Email: singh.aaka@northeastern.edu\
 Contribution:
 - Mainly Backend
-- Worked on Firebase auth and RTDB integration
+- Worked on Firebase auth, RTDB integration and DB design
 - Worked on all the activities java files, data models and UI connection
 
 GitHub Name: mohitmhamunkar\
@@ -30,7 +30,7 @@ Test Information:
 1. 	email: mohit.mhamunkar@gmail.com\
 	Password: 123456
 2.	email: jondoe@gmail.com\
-	Pasword: 123456
+	Pasword: 1234567
 
 
 
