@@ -2,18 +2,25 @@ Group 10
 Mohit Rajendra Mhamunkar
 Canvas Name: Mohit Mhamunkar
 Email: mhamunkar.m@northeastern.edu
-Contribution: Frontend Development & Asset Creation
+Contribution: 
+- Mainly Frontend & UI /UX Design 
+- Worked on Libraries and dependencies for GUI
+- Worked on all the activities java files and UI connection
+- Worked on Asset creation through Adobe & Lottie Animations
 
 Aakash Singh
 Canvas Name: Aakash Singh
 Email: singh.aaka@northeastern.edu
-Contribution: Backend Development & Database
+Contribution: 
+- Mainly Backend 
+- Worked on Firebase auth and RTDB integration
+- Worked on all the activities java files, data models and UI connection
 
 GitHub Name: mohitmhamunkar
 Repository Name: wealthwise
 https://github.com/mohitmhamunkar/wealthwise
 
-Video WalkThrough Link:https://drive.google.com/file/d/1oAxeB0JkqZ_pZpIBEiWRfrNTb0fMvy4A/view?usp=share_link
+Video WalkThrough Link: https://drive.google.com/file/d/1oAxeB0JkqZ_pZpIBEiWRfrNTb0fMvy4A/view?usp=share_link
 
 Test Information:
 1. 	email: mohit.mhamunkar@gmail.com
