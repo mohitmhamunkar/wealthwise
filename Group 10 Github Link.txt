@@ -1,0 +1,22 @@
+Group 10 
+Mohit Rajendra Mhamunkar
+Canvas Name: Mohit Mhamunkar
+Email: mhamunkar.m@northeastern.edu
+Contribution: Frontend Development & Asset Creation
+
+Aakash Singh
+Canvas Name: Aakash Singh
+Email: singh.aaka@northeastern.edu
+Contribution: Backend Development & Database
+
+GitHub Name: mohitmhamunkar
+Repository Name: wealthwise
+https://github.com/mohitmhamunkar/wealthwise
+
+Video WalkThrough Link:https://drive.google.com/file/d/1oAxeB0JkqZ_pZpIBEiWRfrNTb0fMvy4A/view?usp=share_link
+
+Test Information:
+1. 	email: mohit.mhamunkar@gmail.com
+	Password: 123456
+2.	email: jondoe@gmail.com
+	PAssword: 123456
