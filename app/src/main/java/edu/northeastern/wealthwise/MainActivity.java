@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -158,6 +160,40 @@ public class MainActivity extends AppCompatActivity {
             }
             ref.child("totalValues").child(uid).child(monthView.getText().toString().toUpperCase().replaceAll("\\s", "")).setValue(totalValues[0]);
         });
+
+        if (txn.getTxnType().equals("Expense")) {
+            ref.child("categoryExpenses")
+                    .child(uid)
+                    .child(monthView.getText().toString().toUpperCase().replaceAll("\\s", ""))
+                    .child(txn.getTxnCategory())
+                    .get().addOnCompleteListener(task -> {
+                        Long expense = 0L;
+                        if (task.getResult() != null && task.getResult().getValue() != null) {
+                            expense = (long) task.getResult().getValue();
+                        }
+                        Long newExpense = expense - Double.valueOf(txn.getAmount()).longValue();
+
+                        if (newExpense > 0) {
+                            ref.child("categoryExpenses")
+                                    .child(uid)
+                                    .child(monthView.getText().toString().toUpperCase().replaceAll("\\s", ""))
+                                    .child(txn.getTxnCategory())
+                                    .setValue(newExpense);
+                        }
+                        else {
+                            ref.child("categoryExpenses")
+                                    .child(uid)
+                                    .child(monthView.getText().toString().toUpperCase().replaceAll("\\s", ""))
+                                    .child(txn.getTxnCategory())
+                                    .removeValue();
+                        }
+                    });
+        }
+//        ref.child("categoryExpenses")
+//                .child(uid)
+//                .child(monthView.getText().toString().toUpperCase().replaceAll("\\s", ""))
+//                .child(txn.getTxnCategory())
+//                .setValue(itemPrice.get(category));
     }
 
     private void updateTotalValues() {
