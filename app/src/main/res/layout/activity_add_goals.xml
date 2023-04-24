@@ -8,7 +8,7 @@
     tools:context=".AddGoalsActivity">
 
     <TextView
-        android:id="@+id/cateogryText"
+        android:id="@+id/categoryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -53,7 +53,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/amountValue"
+        android:id="@+id/goalsAppAmount"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="140dp"
@@ -85,7 +85,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/saveBtn"
+        android:id="@+id/saveBtnGoals"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="420dp"
