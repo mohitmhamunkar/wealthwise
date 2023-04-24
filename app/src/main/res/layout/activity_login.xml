@@ -7,12 +7,26 @@
     android:background="#0B223D"
     tools:context=".LoginActivity">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/moneyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/money" />
+
     <ImageView
         android:id="@+id/logoView"
         android:layout_width="248dp"
         android:layout_height="246dp"
         android:layout_marginTop="50dp"
+        android:layout_marginBottom="24dp"
         android:contentDescription="@string/app_logo"
+        app:layout_constraintBottom_toTopOf="@+id/userName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
